@@ -1,45 +1,59 @@
-const SUPABASE_URL = '';
-const SUPABASE_KEY = '';
+import { get } from 'express/lib/response';
 
-const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const BASE_URL = '';
 
-/* Auth related functions */
-
-export function getUser() {
-    return client.auth.user();
-}
-
-export function checkAuth() {
-    const user = getUser();
-    // do we have a user?
-    if (!user) {
-        // path is different if we are at home page versus any other page
-        const authUrl = location.pathname === '/' ? './auth/' : '../auth/';
-        // include the current url as a "redirectUrl" search param so user can come
-        // back to this page after they sign in...
-        location.replace(`${authUrl}?redirectUrl=${encodeURIComponent(location)}`);
+export async function signUp(userInfo) {
+    const resp = await fetch(`${BASE_URL}/api/v1/users`, {
+        method: 'POST',
+        headers: {
+            Accept: 'appliation/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userInfo),
+        credentials: 'include',
+    });
+    const data = await resp.json();
+    if (resp.ok) {
+        location.replace('./todo');
+    } else {
+        console.error(data.message);
     }
-
-    // return the user so can be used in the page if needed
-    return user;
 }
 
-export async function signUpUser(email, password) {
-    return await client.auth.signUp({
-        email,
-        password,
+export async function getUser() {
+    const resp = await fetch(`${BASE_URL}/api/v1/users/me`, {
+        method: 'GET',
+        headers: {
+            Accept: 'appliation/json',
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include',
     });
+    if (resp.ok) {
+        const user = await resp.json();
+        return user;
+    }
 }
 
-export async function signInUser(email, password) {
-    return await client.auth.signIn({
-        email,
-        password,
+export async function checkIfSignedIn() {
+    const user = await getUser();
+    if (!user) location.replace('../');
+}
+
+export async function redirect() {
+    const user = await getUser();
+    if (user) {
+        location.replace('./todo');
+    }
+}
+
+export async function logout() {
+    const resp = await fetch(`${BASE_URL}/api/v1/users/session`, {
+        method: 'DELETE',
+        credentials: 'include',
     });
+    if (resp.ok) {
+        location.replace('../');
+    }
 }
 
-export async function signOutUser() {
-    return await client.auth.signOut();
-}
-
-/* Data functions */

@@ -1,4 +1,4 @@
-import { get } from 'express/lib/response';
+
 
 const BASE_URL = '';
 
@@ -16,6 +16,7 @@ export async function signUp(userInfo) {
     if (resp.ok) {
         location.replace('./todo');
     } else {
+        //eslint-disable-next-line
         console.error(data.message);
     }
 }

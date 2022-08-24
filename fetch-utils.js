@@ -47,7 +47,7 @@ export async function redirect() {
     }
 }
 
-export async function logout() {
+export async function logoutUser() {
     const resp = await fetch(`${BASE_URL}/api/v1/users/session`, {
         method: 'DELETE',
         credentials: 'include',

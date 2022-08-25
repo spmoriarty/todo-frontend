@@ -1,5 +1,5 @@
 
-
+// BASE_URL is the deployed heroku site address
 const BASE_URL = '';
 
 export async function signUp(userInfo) {
@@ -22,7 +22,7 @@ export async function signUp(userInfo) {
 }
 
 export async function getUser() {
-    const resp = await fetch(`${BASE_URL}/api/v1/users/me`, {
+    const resp = await fetch(`${BASE_URL}/api/v1/users/session`, {
         method: 'GET',
         headers: {
             Accept: 'appliation/json',

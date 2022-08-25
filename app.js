@@ -4,7 +4,7 @@ const signUpForm = document.getElementById('signUp');
 
 signUpForm.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const userForm = new UserForm(signUpForm);
+    const userForm = new userForm(signUpForm);
     await signUp({
         email: userForm.get('email'),
         password: userForm.get('password'),

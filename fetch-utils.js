@@ -1,5 +1,5 @@
 
-// BASE_URL is the deployed heroku site address
+// BASE_URL is the deployed heroku site address OR IF NOT in production, it runs on local port 7890
 const BASE_URL = '';
 
 export async function signUp(userInfo) {
@@ -12,6 +12,7 @@ export async function signUp(userInfo) {
         body: JSON.stringify(userInfo),
         credentials: 'include',
     });
+    //console log outside this flow
     const data = await resp.json();
     if (resp.ok) {
         location.replace('./todo');
